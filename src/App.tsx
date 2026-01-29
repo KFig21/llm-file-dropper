@@ -233,8 +233,7 @@ export default function App() {
   const isResizing = useRef(false);
 
   // 1. Resize Logic
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const startResizing = useCallback((e: React.MouseEvent) => {
+  const startResizing = useCallback(() => {
     isResizing.current = true;
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', stopResizing);
