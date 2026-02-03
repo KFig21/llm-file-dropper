@@ -1,0 +1,48 @@
+/* Dark Theme (Your existing one, cleaned up) */
+:root,
+[data-theme='dark'] {
+    /* Backgrounds */
+    --BG-leftPanel: #161b22;
+    --BG-rightPanel: #0d1117;
+    --BG-activeTab: #1f2428;
+    --BG-primaryButton: #30363d;
+
+    /* Text */
+    --fontColor-primary: #e6edf3;
+    --fontColor-secondary: #8b949e;
+    --fontColor-filetree: #c9d1d9;
+    --fontColor-editor: #d1d7dd;
+    --fontColor-lineNumbers: #484f58;
+
+    /* Accents */
+    --borderColor: #30363d;
+    --fontColor-activeTab: #58a6ff;
+    --green: #23864b;
+    --white: #e6edf3;
+    --color-scheme: light dark;
+    --fileTree-hover: rgba(255, 255, 255, 0.05);
+}
+
+/* Light Theme (Fixed) */
+[data-theme='light'] {
+    /* Backgrounds */
+    --BG-leftPanel: #f0f2f6;
+    --BG-rightPanel: #ffffff;
+    --BG-activeTab: #ffffff;
+    --BG-primaryButton: #d0d7de;
+
+    /* Text - Needs to be DARK to show up on light background */
+    --fontColor-primary: #1f2328;
+    --fontColor-secondary: #656d76;
+    --fontColor-filetree: #1f2328;
+    --fontColor-editor: #24292f;
+    --fontColor-lineNumbers: #8c959f;
+
+    /* Accents */
+    --borderColor: #c8cfd6;
+    --fontColor-activeTab: #0969da;
+    --green: #23864b;
+    --white: #e6edf3;
+    --color-scheme: light;
+    --fileTree-hover: rgba(0, 0, 0, 0.08);
+}

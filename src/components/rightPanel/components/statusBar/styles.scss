@@ -1,0 +1,82 @@
+@use './../../../../index.scss' as *;
+
+.status-bar {
+    height: 30px;
+    background: var(--BG-rightPanel);
+    border-top: 1px solid var(--borderColor);
+    display: flex;
+    align-items: center;
+    padding: 0 15px 0 0;
+    font-size: 12px;
+    color: var(--fontColor-secondary);
+    gap: 20px;
+    justify-content: space-between;
+
+    // LEFT: View Toggles
+    .status-toggles {
+        display: flex;
+        height: 100%;
+
+        .status-tab {
+            background: transparent;
+            border: none;
+            border-right: 1px solid var(--borderColor);
+            border-radius: 0;
+            height: 100%;
+            color: var(--fontColor-secondary);
+            font-size: 12px;
+            padding: 0 15px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .status-tab:hover {
+            border-left-color: transparent;
+            border-right-color: transparent;
+            border-top-color: transparent;
+            background: var(--BG-activeTab);
+            color: var(--fontColor-primary);
+        }
+
+        .status-tab.active,
+        .status-tab.focus {
+            background: var(--BG-activeTab);
+            color: var(--fontColor-activeTab);
+            /* GitHub Blue */
+            font-weight: 600;
+            border-bottom: solid 2px var(--fontColor-activeTab);
+            border-top: solid 2px transparent;
+            outline: none;
+        }
+
+        .status-tab:focus {
+            outline: none;
+        }
+    }
+
+    // RIGHT: Status Info
+    .status-info {
+        display: flex;
+        gap: 20px;
+
+        .status-item strong {
+            color: var(--fontColor-primary);
+            margin-left: 4px;
+        }
+
+        .savings-badge {
+            background: var(--green);
+            color: var(--white);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+
+        .savings {
+            border-left: 1px solid var(--borderColor);
+            padding-left: 20px;
+        }
+    }
+}

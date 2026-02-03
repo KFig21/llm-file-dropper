@@ -1,0 +1,16 @@
+@use './../../index.scss' as *;
+
+.left-panel {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    background: var(--BG-leftPanel);
+    overflow: hidden;
+
+    .tree-content {
+        flex: 1;
+        overflow: auto;
+        padding: 15px 5px;
+        position: relative;
+    }
+}

@@ -1,0 +1,66 @@
+@use './../../../../index.scss' as *;
+
+
+.editor-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    background: var(--bg-rightPanel);
+    position: relative;
+
+    .line-numbers {
+        width: 50px;
+        background: var(--bg-rightPanel);
+        border-right: 1px solid var(--borderColor);
+        color: var(--fontColor-lineNumbers);
+        padding: 20px 0;
+        text-align: right;
+        overflow: hidden;
+        /* Scroll is controlled by JS */
+        user-select: none;
+
+        pre {
+            margin: 0;
+            padding: 0 10px;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            /* Must match textarea exactly */
+        }
+    }
+
+
+    textarea {
+        flex: 1;
+        background: transparent;
+        color: var(--fontColor-editor);
+        border: none;
+        padding: 20px;
+        resize: none;
+        font-family: 'Fira Code', 'Courier New', monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        /* Essential for alignment */
+        outline: none;
+        white-space: pre;
+        /* Prevents wrapping which would break line numbers */
+        overflow-x: auto;
+        text-wrap: wrap;
+    }
+
+    /* Custom scrollbar to make it look like an IDE */
+    textarea::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    textarea::-webkit-scrollbar-thumb {
+        background: var(--borderColor);
+        border-radius: 5px;
+        cursor: auto;
+    }
+
+    textarea::-webkit-scrollbar-thumb:hover {
+        background: #484f58;
+    }
+}

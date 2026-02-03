@@ -1,0 +1,90 @@
+@use './../../../../index.scss' as *;
+
+.file-tree-wrapper {
+    margin-left: 12px;
+    font-family: 'Inter', system-ui;
+
+    .tree-row {
+        display: flex;
+        align-items: center;
+        padding: 2px 0;
+        /* Slightly tighter padding */
+        border-radius: 4px;
+
+        &:hover {
+            background: var(--fileTree-hover);
+        }
+
+        .chevron-wrapper {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            margin-right: 2px;
+
+            .chevron {
+                font-size: 24px;
+                color: var(--fontColor-secondary);
+                display: inline-block;
+                margin-bottom: 4px;
+                margin-left: 0px;
+            }
+
+            .chevron.expanded {
+                transform: rotate(90deg);
+                margin-bottom: 0px;
+                margin-left: 4px;
+            }
+        }
+
+        input[type='checkbox'] {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        .node-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            flex: 1;
+
+            .file-badge {
+                font-size: 9px;
+                font-weight: bold;
+                color: white;
+                padding: 1px 4px;
+                border-radius: 3px;
+                min-width: 24px;
+                text-align: center;
+                display: inline-block;
+                margin-right: 8px;
+                line-height: 1.2;
+            }
+
+            .folder-icon {
+                margin-right: 8px;
+                font-size: 14px;
+            }
+
+            .node-name {
+                font-size: 13px;
+                color: var(--fontColor-filetree);
+
+                &.selected {
+                    color: var(--fontColor-activeTab);
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    .tree-children {
+        border-left: 1px solid var(--borderColor);
+        /* Vertical guide line */
+        margin-left: 9px;
+        /* Align guide line with parent folder */
+    }
+}
