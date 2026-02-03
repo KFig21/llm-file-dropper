@@ -48,7 +48,10 @@ export const FileTreeItem = ({
           {node.kind === 'directory' ? (
             <span className="folder-icon">{isExpanded ? '📂' : '📁'}</span>
           ) : (
-            <span className="file-badge" style={{ backgroundColor: fileInfo?.color }}>
+            <span
+              className="file-badge"
+              style={{ backgroundColor: fileInfo?.backgroundColor, color: fileInfo?.color }}
+            >
               {fileInfo?.label}
             </span>
           )}

@@ -2,7 +2,7 @@
 :root,
 [data-theme='dark'] {
     /* Backgrounds */
-    --BG-leftPanel: #161b22;
+    --BG-leftPanel: rgb(22, 27, 34);
     --BG-rightPanel: #0d1117;
     --BG-activeTab: #1f2428;
     --BG-primaryButton: #30363d;
@@ -16,7 +16,7 @@
 
     /* Accents */
     --borderColor: #30363d;
-    --fontColor-activeTab: #58a6ff;
+    --fontColor-activeTab: rgb(88, 166, 255);
     --green: #23864b;
     --white: #e6edf3;
     --color-scheme: light dark;

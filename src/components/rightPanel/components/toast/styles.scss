@@ -1,0 +1,92 @@
+@use './../../../../index.scss' as *;
+
+.toast-notification {
+    position: absolute;
+    top: 70px;
+    /* Positioned just below your floating actions */
+    right: 30px;
+    z-index: 100;
+
+    background-color: var(--green);
+    color: white;
+
+    min-width: 200px;
+    border-radius: 3px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    /* Clips the progress bar */
+
+    /* Enter Animation */
+    animation: slideIn 0.35s ease forwards;
+
+    .toast-content {
+        position: relative;
+        z-index: 2;
+        /* Sit on top of the progress bar */
+        padding: 8px 12px;
+        font-size: 13px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .check-icon {
+            font-weight: bold;
+            font-size: 14px;
+        }
+    }
+
+    /* The "Timer" Loading Bar */
+    .toast-progress {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 0%;
+        /* Start at 0 */
+        background-color: rgba(255, 255, 255, 0.25);
+        /* Lighter green effect */
+        z-index: 1;
+        /* The 3s timer animation */
+        animation: progressFill 2s linear forwards;
+    }
+
+    /* Exit State (Triggered by React state) */
+    &.exiting {
+        animation: slideOut 0.3s ease forwards;
+    }
+}
+
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+}
+
+@keyframes progressFill {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+}

@@ -3,6 +3,7 @@ import { Editor } from './components/editor/Editor';
 import { StatusBar } from './components/statusBar/StatusBar';
 import type { FileNode } from '../../types';
 import { generateAsciiTree } from '../../utils/treeGenerator';
+import { Toast } from './components/toast/Toast';
 import './styles.scss';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 
 export const RightPanel = ({ outputText, rootNode }: Props) => {
   const [activeTab, setActiveTab] = useState<'code' | 'structure'>('code');
+  const [toast, setToast] = useState<{ message: string; id: number } | null>(null);
 
   // 1. Generate the Tree String (Memoized for performance)
   const structureText = useMemo(() => {
@@ -25,8 +27,7 @@ export const RightPanel = ({ outputText, rootNode }: Props) => {
   // 3. Floating Action Handlers
   const copyToClipboard = () => {
     navigator.clipboard.writeText(content);
-    // You might want to replace this alert with a toast notification later
-    alert(`Copied ${activeTab} to clipboard!`);
+    setToast({ message: 'Copied to clipboard', id: Date.now() });
   };
 
   const copyMinified = () => {
@@ -36,7 +37,7 @@ export const RightPanel = ({ outputText, rootNode }: Props) => {
       .filter((line) => line.length > 0)
       .join(' ');
     navigator.clipboard.writeText(minified);
-    alert('Copied minified version!');
+    setToast({ message: 'Copied minified to clipboard', id: Date.now() });
   };
 
   return (
@@ -53,6 +54,8 @@ export const RightPanel = ({ outputText, rootNode }: Props) => {
             </button>
           </div>
         )}
+        {/* Using .id as key forces a remount on every click */}
+        {toast && <Toast key={toast.id} message={toast.message} onClose={() => setToast(null)} />}
       </div>
 
       {/* EDITOR (Reused for both Code and Structure views!) */}
