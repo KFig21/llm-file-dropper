@@ -2,6 +2,7 @@ import type { FileNode } from '../../types';
 import { FileTreeItem } from './components/fileTreeItem/FileTreeItem';
 import { Footer } from './components/footer/Footer';
 import { Header } from './components/header/Header';
+import { Signature } from './components/signature/Signature';
 import './styles.scss';
 
 interface Props {
@@ -32,6 +33,9 @@ export const LeftPanel = ({
   return (
     <div className="left-panel" style={{ width: `${leftWidth}px` }}>
       <Header handleOpenFolder={handleOpenFolder} node={node} toggleExpandAll={toggleExpandAll} />
+      {node && (
+        <Footer loading={loading} generateOutput={generateOutput} selectedPaths={selectedPaths} />
+      )}
       <div className="tree-content">
         {/* File Tree */}
         {node && (
@@ -44,7 +48,7 @@ export const LeftPanel = ({
           />
         )}
       </div>
-      {node && <Footer loading={loading} generateOutput={generateOutput} />}
+      <Signature />
     </div>
   );
 };

@@ -1,0 +1,39 @@
+@use './../../../../index.scss' as *;
+
+.signature-container {
+    padding: 0px;
+    border-top: 1px solid var(--borderColor);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--BG-rightPanel);
+    border-color: var(--borderColor);
+    color: var(--fontColor-lineNumbers);
+    transition: all ease .15s;
+
+    .signature-wrapper {
+        padding: 12px;
+
+        .github-link {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            justify-content: center;
+            color: var(--fontColor-lineNumbers);
+            transition: all ease .15s;
+            cursor: pointer;
+            text-decoration: none;
+
+            .signature {
+                font-size: .9rem;
+            }
+        }
+    }
+
+    &:hover {
+
+        .github-link {
+            color: var(--fontColor-activeTab);
+        }
+    }
+}

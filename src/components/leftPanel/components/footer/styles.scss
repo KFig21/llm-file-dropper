@@ -2,7 +2,7 @@
 
 .footer {
     padding: 0px;
-    border-top: 1px solid var(--borderColor);
+    border-bottom: 1px solid var(--borderColor);
 
     .generate-button {
         width: 100%;
@@ -14,7 +14,13 @@
         color: var(--fontColor-primary);
         transition: all ease .15s;
 
-        &:hover {
+        &.inactive {
+            background-color: var(--BG-leftPanel);
+            color: var(--fontColor-lineNumbers);
+            cursor: unset;
+        }
+
+        &.active:hover {
             background-color: var(--green);
             color: var(--BG-rightPanel)
         }
