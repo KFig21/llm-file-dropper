@@ -11,6 +11,7 @@ interface Props {
   node: FileNode | null;
   selectedPaths: Set<string>;
   expandedPaths: Set<string>;
+  fileStats: Record<string, number>;
   toggleSelection: (path: string, isDir: boolean, node: FileNode) => void;
   toggleExpand: (path: string) => void;
   toggleExpandAll: (expand: boolean) => void;
@@ -24,6 +25,7 @@ export const LeftPanel = ({
   node,
   selectedPaths,
   expandedPaths,
+  fileStats = {},
   toggleSelection,
   toggleExpand,
   toggleExpandAll,
@@ -43,6 +45,7 @@ export const LeftPanel = ({
             node={node}
             selectedPaths={selectedPaths}
             expandedPaths={expandedPaths}
+            fileStats={fileStats}
             toggleSelection={toggleSelection}
             toggleExpand={toggleExpand}
           />

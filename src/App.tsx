@@ -13,6 +13,7 @@ export default function App() {
     selectedPaths,
     expandedPaths,
     loading,
+    fileStats,
     handleOpenFolder,
     toggleSelection,
     toggleExpand,
@@ -36,6 +37,7 @@ export default function App() {
           node={rootNode}
           selectedPaths={selectedPaths}
           expandedPaths={expandedPaths}
+          fileStats={fileStats}
           toggleSelection={toggleSelection}
           toggleExpand={toggleExpand}
           toggleExpandAll={toggleExpandAll}

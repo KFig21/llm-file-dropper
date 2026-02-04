@@ -6,33 +6,39 @@ export type FileNode = {
   children?: FileNode[];
 };
 
-// file type icons
-export const getFileIcon = (fileName: string) => {
-  const ext = fileName.split('.').pop()?.toLowerCase();
+// Just return the metadata here, not the React Component
+export const getFileIconData = (fileName: string) => {
+  const lower = fileName.toLowerCase();
+  const ext = lower.split('.').pop();
+
+  if (lower === 'vite.config.ts' || lower === 'vite.config.js')
+    return { type: 'vite', color: '#646cff' };
+  if (lower === 'package.json') return { type: 'json', color: '#cb3837' };
 
   switch (ext) {
     case 'ts':
+      return { type: 'ts', color: '#3178c6' };
     case 'tsx':
-      return { icon: '', color: 'white', backgroundColor: '#3178c6', label: 'TS' }; // Blue
-    case 'md': // readme
-      return { icon: '', color: 'white', backgroundColor: '#3c88daff', label: 'MD' }; // Light Blue
+      return { type: 'react', color: '#61dafb' };
     case 'js':
     case 'jsx':
-      return { icon: '', color: 'black', backgroundColor: '#f7df1e', label: 'JS' }; // Yellow
+      return { type: 'js', color: '#f7df1e' };
     case 'html':
-      return { icon: '', color: 'white', backgroundColor: '#e34f26', label: 'HTML' }; // Orange
+      return { type: 'html', color: '#e34f26' };
     case 'css':
-      return { icon: '', color: 'white', backgroundColor: '#1572b6', label: 'CSS' }; // Blue
+      return { type: 'css', color: '#1572b6' };
     case 'scss':
     case 'sass':
-      return { icon: '', color: 'white', backgroundColor: '#c6308fff', label: 'SCSS' }; // Pink
+      return { type: 'sass', color: '#c69' };
+    case 'md':
+      return { type: 'md', color: '#8b949e' };
     case 'json':
-      return { icon: '', color: 'black', backgroundColor: '#cbcb41', label: 'JSON' }; // Yellowish
-    case 'svg':
+      return { type: 'json', color: '#cbcb41' };
     case 'png':
     case 'jpg':
-      return { icon: '', color: 'white', backgroundColor: '#a074c4', label: 'IMG' };
+    case 'svg':
+      return { type: 'image', color: '#a074c4' };
     default:
-      return { icon: '', color: 'white', backgroundColor: '#798087ff', label: 'FILE' };
+      return { type: 'default', color: '#8b949e' };
   }
 };

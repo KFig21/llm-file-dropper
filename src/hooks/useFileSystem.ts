@@ -4,8 +4,9 @@ import type { FileNode } from '../types';
 export function useFileSystem() {
   const [rootNode, setRootNode] = useState<FileNode | null>(null);
   const [selectedPaths, setSelectedPaths] = useState<Set<string>>(new Set());
-  const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set()); // <--- NEW
+  const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(false);
+  const [fileStats, setFileStats] = useState<Record<string, number>>({});
 
   // Helper: Recursively build the tree
   const buildFileTree = async (handle: FileSystemHandle, path = ''): Promise<FileNode> => {
@@ -34,20 +35,52 @@ export function useFileSystem() {
       const tree = await buildFileTree(dirHandle);
       setRootNode(tree);
       setSelectedPaths(new Set());
-      setExpandedPaths(new Set([tree.path])); // <--- Auto-expand the root folder
+      setExpandedPaths(new Set([tree.path]));
+      setFileStats({}); // Reset stats on new folder
     } catch (err) {
       console.error('User cancelled or API not supported', err);
     }
   };
 
-  // ... (toggleSelection and generateOutput remain the same) ...
+  // Helper to count lines
+  const countFileLines = async (node: FileNode) => {
+    try {
+      if (node.kind !== 'file') return;
+      const fileHandle = node.handle as FileSystemFileHandle;
+      const file = await fileHandle.getFile();
+      // Skip binary/images for counting
+      if (file.type.startsWith('image')) return;
+
+      const text = await file.text();
+      const lines = text.split('\n').length;
+
+      setFileStats((prev) => ({
+        ...prev,
+        [node.path]: lines,
+      }));
+    } catch (error) {
+      console.error('Error reading file lines', error);
+    }
+  };
+
   const toggleSelection = useCallback((path: string, isDir: boolean, node: FileNode) => {
     setSelectedPaths((prev) => {
       const next = new Set(prev);
       const isCurrentlySelected = next.has(path);
+
+      // If we are selecting it (adding to set), calculate lines
+      if (!isCurrentlySelected && !isDir) {
+        countFileLines(node);
+      }
+
+      // ... (Rest of logic regarding directories/recursive selection) ...
       const toggleNode = (n: FileNode, forceState: boolean) => {
-        if (forceState) next.add(n.path);
-        else next.delete(n.path);
+        if (forceState) {
+          next.add(n.path);
+          if (n.kind === 'file') countFileLines(n); // Count lines for directory children too
+        } else {
+          next.delete(n.path);
+        }
         if (n.children) n.children.forEach((child) => toggleNode(child, forceState));
       };
       if (isDir) {
@@ -121,6 +154,7 @@ export function useFileSystem() {
     selectedPaths,
     expandedPaths,
     loading,
+    fileStats,
     handleOpenFolder,
     toggleSelection,
     toggleExpand,
