@@ -1,73 +1,43 @@
-# React + TypeScript + Vite
+# 📂 LLM File Dropper
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**LLM File Dropper** is a browser-based utility designed to streamline the process of feeding local codebases into Large Language Models (LLMs). It leverages the **File System Access API** to read local directories securely without ever uploading your data to a server.
 
-Currently, two official plugins are available:
+## Why I made this
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+When using LLMs I found that they struggle to retain context of what you are working on and how your project is structured. After constantly copying and pasting files along with their paths into LLMs I decided to simplify the effort and build **LLM File Dropper**. After selecting your base folder, select the files you want to feed into an LLM, when you generate the text it will create a text wall that separates each file by their relative path which will give more context for the LLM so it has a better gauge of your file structure.
 
-## React Compiler
+## 🚀 Live Demo
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Check out the live application here:  
+👉 **[https://kfig21.github.io/llm-file-dropper/](https://kfig21.github.io/llm-file-dropper/)**
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ✨ Features
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Zero Uploads:** Your code stays on your machine. All processing happens locally in the browser.
+- **Intelligent File Tree:** A VS Code-inspired explorer with support for recursive directory selection.
+- **Real-time Line Counts:** Precise line count tracking for individual files and entire folders, accounting for formatting overhead.
+- **Context Optimization:**
+  - **Token Estimation:** Get a rough idea of your prompt size before copying.
+  - **Minification:** One-click option to strip whitespace and newlines to save on token costs.
+  - **Auto-Ignore:** Automatically filters out `node_modules`, `.git`, and `dist` to keep your context clean.
+- **ASCII Structure:** Generate a clean ASCII tree representation of your project to help LLMs understand your architecture.
+- **Modern UI:** Adaptive Dark/Light mode with language-specific file icons.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🛠️ Tech Stack
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- **Framework:** React 18 with Vite
+- **Language:** TypeScript
+- **Styling:** Sass (SCSS)
+- **API:** Web File System Access API
+- **Icons:** React Icons (Simple Icons & VS Code Icons), MUI Icons
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📖 How To Use
+
+1.  **Open Folder:** Click the **📂 Choose a folder** button to grant the browser temporary read access to your project.
+2.  **Select Files:** Check the boxes for the files/folders you want to include. The folder label will show the total
