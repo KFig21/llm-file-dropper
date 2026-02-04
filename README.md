@@ -1,4 +1,4 @@
-# 📂 LLM File Dropper
+# LLM File Dropper
 
 **LLM File Dropper** is a browser-based utility designed to streamline the process of feeding local codebases into Large Language Models (LLMs). It leverages the **File System Access API** to read local directories securely without ever uploading your data to a server.
 
@@ -13,7 +13,7 @@ Check out the live application here:
 
 ---
 
-## ✨ Features
+## Features
 
 - **Zero Uploads:** Your code stays on your machine. All processing happens locally in the browser.
 - **Intelligent File Tree:** A VS Code-inspired explorer with support for recursive directory selection.
@@ -27,7 +27,7 @@ Check out the live application here:
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework:** React 18 with Vite
 - **Language:** TypeScript
@@ -37,7 +37,7 @@ Check out the live application here:
 
 ---
 
-## 📖 How To Use
+## How To Use
 
 1.  **Open Folder:** Click the **📂 Choose a folder** button to grant the browser temporary read access to your project.
 2.  **Select Files:** Check the boxes for the files/folders you want to include. The folder label will show the total
