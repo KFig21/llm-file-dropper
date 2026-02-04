@@ -6,10 +6,9 @@
 
 When using LLMs I found that they struggle to retain context of what you are working on and how your project is structured. After constantly copying and pasting files along with their paths into LLMs I decided to simplify the effort and build **LLM File Dropper**. After selecting your base folder, select the files you want to feed into an LLM, when you generate the text it will create a text wall that separates each file by their relative path which will give more context for the LLM so it has a better gauge of your file structure.
 
-## 🚀 Live Demo
+## Live Demo
 
-Check out the live application here:  
-👉 **[https://kfig21.github.io/llm-file-dropper/](https://kfig21.github.io/llm-file-dropper/)**
+**[Check out the live application here](https://kfig21.github.io/llm-file-dropper/)** 👀
 
 ---
 
