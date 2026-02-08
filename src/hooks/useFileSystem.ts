@@ -17,8 +17,18 @@ export function useFileSystem() {
     }
     const dirHandle = handle as FileSystemDirectoryHandle;
     const children: FileNode[] = [];
+    const IGNORE_LIST = [
+      'node_modules',
+      '.git',
+      'dist',
+      'build',
+      '.next',
+      'vendor',
+      '.cache',
+      '.webpack',
+    ];
     for await (const entry of dirHandle.values()) {
-      if (['node_modules', '.git', 'dist'].includes(entry.name)) continue;
+      if (IGNORE_LIST.includes(entry.name)) continue;
       children.push(await buildFileTree(entry, currentPath));
     }
     children.sort((a, b) => {
@@ -104,19 +114,50 @@ export function useFileSystem() {
   const generateOutput = useCallback(async () => {
     if (!rootNode) return '';
     let result = '';
+    let totalLines = 0;
+    const LINE_LIMIT = 10000;
+    let limitExceeded = false;
+
     const processNode = async (node: FileNode) => {
+      if (limitExceeded) return;
+
       if (node.kind === 'file' && selectedPaths.has(node.path)) {
         const fileHandle = node.handle as FileSystemFileHandle;
         const file = await fileHandle.getFile();
+
+        // Skip binary/images
         if (file.type.startsWith('image') || file.name.endsWith('.ico')) return;
+
         const text = await file.text();
+        const lineCount = text.split('\n').length;
+
+        // Check if this file pushes us over the limit
+        if (totalLines + lineCount > LINE_LIMIT) {
+          limitExceeded = true;
+          return;
+        }
+
+        totalLines += lineCount;
         result += `// ${node.path}\n\n${text}\n\n`;
       }
+
       if (node.children) {
-        for (const child of node.children) await processNode(child);
+        for (const child of node.children) {
+          await processNode(child);
+        }
       }
     };
+
     await processNode(rootNode);
+
+    if (limitExceeded) {
+      return `⚠️ WARNING: Output truncated. 
+The selected files exceed the safety limit of 5,000 lines. 
+Total lines would exceed ${LINE_LIMIT}. 
+
+Please deselect large directories (like node_modules) or individual large files to continue.`;
+    }
+
     return result.trim();
   }, [rootNode, selectedPaths]);
 
