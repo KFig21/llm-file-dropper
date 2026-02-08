@@ -37,7 +37,6 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 margin-left: 10px;
-                // color: var(--fontColor-primary);
             }
 
             &:hover {
@@ -46,6 +45,47 @@
             }
         }
 
+        .refresh-button {
+            background: none;
+            border: none;
+            color: var(--fontColor-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 7px;
+            border-radius: 3px;
+            transition: all 0.2s;
+
+            .refresh-icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            &:hover {
+                background-color: var(--green);
+                color: var(--white);
+
+                .refresh-icon svg {
+                    animation: spin 1s;
+                }
+            }
+
+            .spinning {
+                animation: spin 1s linear infinite;
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(360deg);
+            }
+
+            to {
+                transform: rotate(0deg);
+            }
+        }
 
         .theme-switcher {
             position: absolute;

@@ -7,11 +7,10 @@ export function useFileSystem() {
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(false);
   const [fileStats, setFileStats] = useState<Record<string, number>>({});
+  const [directoryHandle, setDirectoryHandle] = useState<FileSystemDirectoryHandle | null>(null);
 
   // Helper: Recursively build the tree
   const buildFileTree = async (handle: FileSystemHandle, path = ''): Promise<FileNode> => {
-    // ... (Existing buildFileTree logic remains exactly the same) ...
-    // Just copying the signature here to show context
     const currentPath = path ? `${path}/${handle.name}` : handle.name;
     if (handle.kind === 'file') {
       return { name: handle.name, kind: 'file', path: currentPath, handle };
@@ -32,71 +31,78 @@ export function useFileSystem() {
   const handleOpenFolder = async () => {
     try {
       const dirHandle = await window.showDirectoryPicker();
+      setDirectoryHandle(dirHandle); // Save handle for refresh
       const tree = await buildFileTree(dirHandle);
       setRootNode(tree);
       setSelectedPaths(new Set());
       setExpandedPaths(new Set([tree.path]));
-      setFileStats({}); // Reset stats on new folder
+      setFileStats({});
     } catch (err) {
       console.error('User cancelled or API not supported', err);
     }
   };
 
+  const refresh = async () => {
+    if (!directoryHandle) return;
+    setLoading(true);
+    try {
+      const tree = await buildFileTree(directoryHandle);
+      setRootNode(tree);
+      // We keep selectedPaths and expandedPaths so the user doesn't lose their place!
+    } catch (err) {
+      console.error('Refresh failed', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Helper to count lines
   const countFileLines = async (node: FileNode) => {
+    if (node.kind !== 'file' || fileStats[node.path]) return; // Don't recount if exists
     try {
-      if (node.kind !== 'file') return;
       const fileHandle = node.handle as FileSystemFileHandle;
       const file = await fileHandle.getFile();
-      // Skip binary/images for counting
       if (file.type.startsWith('image')) return;
-
       const text = await file.text();
       const lines = text.split('\n').length;
-
-      setFileStats((prev) => ({
-        ...prev,
-        [node.path]: lines,
-      }));
+      setFileStats((prev) => ({ ...prev, [node.path]: lines }));
     } catch (error) {
       console.error('Error reading file lines', error);
     }
   };
 
-  const toggleSelection = useCallback((path: string, isDir: boolean, node: FileNode) => {
-    setSelectedPaths((prev) => {
-      const next = new Set(prev);
-      const isCurrentlySelected = next.has(path);
+  const toggleSelection = useCallback(
+    (path: string, isDir: boolean, node: FileNode) => {
+      setSelectedPaths((prev) => {
+        const next = new Set(prev);
+        const isCurrentlySelected = next.has(path);
 
-      // If we are selecting it (adding to set), calculate lines
-      if (!isCurrentlySelected && !isDir) {
-        countFileLines(node);
-      }
+        const toggleNode = (n: FileNode, forceState: boolean) => {
+          if (forceState) {
+            next.add(n.path);
+            if (n.kind === 'file') countFileLines(n);
+          } else {
+            next.delete(n.path);
+          }
+          if (n.children) n.children.forEach((child) => toggleNode(child, forceState));
+        };
 
-      // ... (Rest of logic regarding directories/recursive selection) ...
-      const toggleNode = (n: FileNode, forceState: boolean) => {
-        if (forceState) {
-          next.add(n.path);
-          if (n.kind === 'file') countFileLines(n); // Count lines for directory children too
-        } else {
-          next.delete(n.path);
+        if (isDir) toggleNode(node, !isCurrentlySelected);
+        else {
+          if (isCurrentlySelected) next.delete(path);
+          else {
+            next.add(path);
+            countFileLines(node);
+          }
         }
-        if (n.children) n.children.forEach((child) => toggleNode(child, forceState));
-      };
-      if (isDir) {
-        toggleNode(node, !isCurrentlySelected);
-      } else {
-        if (isCurrentlySelected) next.delete(path);
-        else next.add(path);
-      }
-      return next;
-    });
-  }, []);
+        return next;
+      });
+    },
+    [fileStats],
+  );
 
-  const generateOutput = async () => {
-    // ... (Your existing logic) ...
+  const generateOutput = useCallback(async () => {
     if (!rootNode) return '';
-    setLoading(true);
     let result = '';
     const processNode = async (node: FileNode) => {
       if (node.kind === 'file' && selectedPaths.has(node.path)) {
@@ -107,15 +113,12 @@ export function useFileSystem() {
         result += `// ${node.path}\n\n${text}\n\n`;
       }
       if (node.children) {
-        for (const child of node.children) {
-          await processNode(child);
-        }
+        for (const child of node.children) await processNode(child);
       }
     };
     await processNode(rootNode);
-    setLoading(false);
     return result.trim();
-  };
+  }, [rootNode, selectedPaths]);
 
   const toggleExpand = useCallback((path: string) => {
     setExpandedPaths((prev) => {
@@ -156,6 +159,7 @@ export function useFileSystem() {
     loading,
     fileStats,
     handleOpenFolder,
+    refresh,
     toggleSelection,
     toggleExpand,
     toggleExpandAll,

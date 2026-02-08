@@ -29,7 +29,6 @@
         }
     }
 
-
     textarea {
         flex: 1;
         background: transparent;
@@ -40,10 +39,8 @@
         font-family: 'Fira Code', 'Courier New', monospace;
         font-size: 14px;
         line-height: 1.6;
-        /* Essential for alignment */
         outline: none;
         white-space: pre;
-        /* Prevents wrapping which would break line numbers */
         overflow-x: auto;
         text-wrap: wrap;
     }

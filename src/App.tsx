@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RightPanel } from './components/rightPanel/RightPanel';
 import { LeftPanel } from './components/leftPanel/LeftPanel';
 import { useFileSystem } from './hooks/useFileSystem';
@@ -15,6 +15,7 @@ export default function App() {
     loading,
     fileStats,
     handleOpenFolder,
+    refresh,
     toggleSelection,
     toggleExpand,
     toggleExpandAll,
@@ -23,10 +24,17 @@ export default function App() {
 
   const { width: leftWidth, startResizing } = useResizable(350);
 
-  const handleGenerate = async () => {
-    const text = await generateOutput();
-    if (text) setOutputText(text);
-  };
+  // 1) AUTO-GENERATE EFFECT
+  useEffect(() => {
+    const updateText = async () => {
+      const text = await generateOutput();
+      setOutputText(text);
+    };
+
+    // Debounce to avoid flashing if user clicks 10 checkboxes quickly
+    const timeoutId = setTimeout(updateText, 150);
+    return () => clearTimeout(timeoutId);
+  }, [selectedPaths, generateOutput]);
 
   return (
     <div className="app-wrapper">
@@ -34,6 +42,7 @@ export default function App() {
         <LeftPanel
           leftWidth={leftWidth}
           handleOpenFolder={handleOpenFolder}
+          refresh={refresh}
           node={rootNode}
           selectedPaths={selectedPaths}
           expandedPaths={expandedPaths}
@@ -41,7 +50,6 @@ export default function App() {
           toggleSelection={toggleSelection}
           toggleExpand={toggleExpand}
           toggleExpandAll={toggleExpandAll}
-          generateOutput={handleGenerate}
           loading={loading}
         />
         <div className="resizer" onMouseDown={startResizing} />

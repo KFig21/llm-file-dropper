@@ -2,15 +2,18 @@ import type { FileNode } from '../../../../types';
 import { useTheme } from '../../../../context/ThemeContext';
 import Brightness5Icon from '@mui/icons-material/Brightness5';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import SyncIcon from '@mui/icons-material/Sync';
 import './styles.scss';
 
 interface Props {
   handleOpenFolder: () => void;
   node: FileNode | null;
   toggleExpandAll: (expand: boolean) => void;
+  refresh: () => void;
+  loading: boolean;
 }
 
-export const Header = ({ handleOpenFolder, node, toggleExpandAll }: Props) => {
+export const Header = ({ handleOpenFolder, node, toggleExpandAll, refresh, loading }: Props) => {
   // Consume Theme Context
   const { theme, setTheme, themes } = useTheme();
 
@@ -27,6 +30,13 @@ export const Header = ({ handleOpenFolder, node, toggleExpandAll }: Props) => {
           <span>📂</span>
           <span className="folder-name">{node ? node.name : 'Choose a folder'}</span>
         </button>
+        {node && (
+          <button className="refresh-button" onClick={refresh} title="Refresh Files">
+            <div className="refresh-icon">
+              <SyncIcon fontSize="small" className={loading ? 'spinning' : ''} />
+            </div>
+          </button>
+        )}
         {/* Theme switcher */}
         <div className="theme-switcher">
           <button onClick={handleThemeToggle} className="theme-toggle" title="Switch Theme">
