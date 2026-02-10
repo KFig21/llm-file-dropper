@@ -61,20 +61,23 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+
+            }
+
+            &.spinning {
+                background-color: var(--green);
+                color: var(--white);
+
+                svg {
+                    animation: spin 1s ease infinite;
+                }
             }
 
             &:hover {
                 background-color: var(--green);
                 color: var(--white);
-
-                .refresh-icon svg {
-                    animation: spin 1s;
-                }
             }
 
-            .spinning {
-                animation: spin 1s linear infinite;
-            }
         }
 
         @keyframes spin {

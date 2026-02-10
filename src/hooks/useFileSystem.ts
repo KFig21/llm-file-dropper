@@ -62,7 +62,10 @@ export function useFileSystem() {
     } catch (err) {
       console.error('Refresh failed', err);
     } finally {
-      setLoading(false);
+      // spin at least once
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     }
   };
 
@@ -152,8 +155,8 @@ export function useFileSystem() {
 
     if (limitExceeded) {
       return `⚠️ WARNING: Output truncated. 
-The selected files exceed the safety limit of 5,000 lines. 
-Total lines would exceed ${LINE_LIMIT}. 
+
+The selected files exceed the safety limit of ${LINE_LIMIT.toLocaleString()} lines.
 
 Please deselect large directories (like node_modules) or individual large files to continue.`;
     }

@@ -31,9 +31,13 @@ export const Header = ({ handleOpenFolder, node, toggleExpandAll, refresh, loadi
           <span className="folder-name">{node ? node.name : 'Choose a folder'}</span>
         </button>
         {node && (
-          <button className="refresh-button" onClick={refresh} title="Refresh Files">
+          <button
+            className={`refresh-button ${loading ? 'spinning' : ''}`}
+            onClick={refresh}
+            title="Refresh Files"
+          >
             <div className="refresh-icon">
-              <SyncIcon fontSize="small" className={loading ? 'spinning' : ''} />
+              <SyncIcon fontSize="small" />
             </div>
           </button>
         )}

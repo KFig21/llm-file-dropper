@@ -31,8 +31,6 @@
         }
 
         .status-tab:hover {
-            border-left-color: transparent;
-            border-right-color: transparent;
             border-top-color: transparent;
             background: var(--BG-activeTab);
             color: var(--fontColor-primary);
@@ -42,7 +40,6 @@
         .status-tab.focus {
             background: var(--BG-activeTab);
             color: var(--fontColor-activeTab);
-            /* GitHub Blue */
             font-weight: 600;
             border-bottom: solid 2px var(--fontColor-activeTab);
             border-top: solid 2px transparent;
